@@ -22,7 +22,11 @@ async def env_test():
     database = os.getenv("DATABASE")
 
     return {
-        "USER" : "USER"
+        "USER" : username 
+        , "PASSWORD" : password
+        , "HOST" : host
+        , "PORT" : port 
+        , "DB" : database 
     }
 
 @app.post("/post-data")

@@ -1,0 +1,9 @@
+GET http://localhost:8000/sales/dates
+
+GET http://localhost:8000/sales/monthly?start_date=2025-01-01&end_date=2025-03-08
+
+
+
+
+
+

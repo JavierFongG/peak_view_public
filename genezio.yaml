@@ -1,6 +1,6 @@
 backend:
     functions:
-        - entry: app/main.py
+        - entry: main.py
           handler: app
           name: fast-api
           path: ./

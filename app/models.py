@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Text, Enum, Float
 from pydantic import BaseModel 
-from database import Base 
+from app.database import Base 
 
 class Invoices(Base): 
     __tablename__ = "invoices"

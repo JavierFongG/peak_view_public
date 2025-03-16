@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Depends, Query, APIRouter
 from sqlalchemy.orm import Session 
-from database import get_db
+from app.database import get_db
 from models import Invoices, Employee, CreditNotes
 from routers import sales, payments, employees
-import models, database
+import models, app.database as database
 
 app = FastAPI() 
 

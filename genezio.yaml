@@ -7,7 +7,7 @@ backend:
         - entry: main.py
           handler: app
           name: peakview-backend
-          path: ./app/
+          path: ./
           type: httpServer
     
 name: peakview

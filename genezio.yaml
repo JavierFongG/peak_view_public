@@ -2,8 +2,8 @@ backend:
     functions:
         - entry: main.py
           handler: app
-          name: peak-view-backend
-          path: ./app/
+          name: peakview-backend
+          path: ./
           type: httpServer
     language:
         name: python

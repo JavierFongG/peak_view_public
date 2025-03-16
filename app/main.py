@@ -1,8 +1,7 @@
 from fastapi import FastAPI 
 from sqlalchemy.orm import Session 
-from models import Invoice
 from database import get_db 
-import models, database
+import .models 
 from routers import sales
 
 app = FastAPI() 

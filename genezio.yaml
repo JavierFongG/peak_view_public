@@ -2,8 +2,8 @@ backend:
     functions:
         - entry: main.py
           handler: app
-          name: fast-api
-          path: ./
+          name: peak-view-backend
+          path: ./app/
           type: httpServer
     language:
         name: python

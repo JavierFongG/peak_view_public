@@ -1,6 +1,6 @@
 from fastapi import FastAPI 
 from sqlalchemy.orm import Session 
-from app.utils.database import get_db 
+from  app.utils.database import get_db 
 import app.utils.models as models, app.utils.database as database
 from app.routers import sales
 

@@ -1,9 +1,1 @@
-GET http://localhost:8000/sales/dates
-
-GET http://localhost:8000/sales/monthly?start_date=2025-01-01&end_date=2025-03-08
-
-
-
-
-
-
+GET https://c7f2a1c6-2703-4d89-8d58-a8dc75e552f4.us-east-1.cloud.genez.io/sales 

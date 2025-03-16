@@ -1,14 +1,15 @@
 backend:
+    path: app/
+    language:
+        name: python
+        packageManager: pip
     functions:
         - entry: main.py
           handler: app
           name: peakview-backend
-          path: ./
+          path: app/
           type: httpServer
-    language:
-        name: python
-        packageManager: pip
-    path: ./
+    
 name: peakview
 region: us-east-1
 yamlVersion: 2

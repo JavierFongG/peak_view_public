@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, T
 from pydantic import BaseModel 
 from database import Base 
 
-class Invoices(Base): 
+class Invoice(Base): 
     __tablename__ = "invoices"
     id = Column(Integer, primary_key=True)
     invoice_number = Column(String) 

@@ -1,7 +1,7 @@
 from fastapi import FastAPI 
 from sqlalchemy.orm import Session 
 from database import get_db 
-import .models 
+import models, database
 from routers import sales
 
 app = FastAPI() 
@@ -13,3 +13,8 @@ app.include_router(sales.router, prefix = "/sales", tags = ["invoices"])
 @app.get("/")
 def root():
     return {'message' : 'im alive'}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app)

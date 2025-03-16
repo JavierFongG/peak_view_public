@@ -1,11 +1,11 @@
 backend:
-    path: app/
+    path: ./app/
     language:
         name: python
         packageManager: pip
     functions:
         - entry: main.py
-          handler: app
+          handler: ./app
           name: peakview-backend
           path: app/
           type: httpServer

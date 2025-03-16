@@ -14,7 +14,6 @@ app.include_router(sales.router, prefix = "/sales", tags = ["invoices"])
 def root():
     return {'message' : 'im alive'}
 
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app)

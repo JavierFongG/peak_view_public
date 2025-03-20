@@ -55,6 +55,7 @@ class Payee(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    tin = Column(String)
 
     invoices = relationship("Invoice", back_populates="payee")
 

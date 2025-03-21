@@ -34,6 +34,7 @@ def sales_detail(db: Session = Depends(get_db)):
             Item.name.label("item_name"),
             InvoiceDetail.quantity.label("item_quantity"),
             InvoiceDetail.unit_price.label("item_unitprice"),
+            (InvoiceDetail.quantity * InvoiceDetail.unit_price * (1 - (Invoice.extra_discount / Invoice.subtotal))).label("item_sales")
         )
         .join(InvoiceDetail, Invoice.id == InvoiceDetail.invoice_id)
         .join(Employee, Invoice.seller_id == Employee.id)
@@ -65,6 +66,7 @@ def sales_detail(db: Session = Depends(get_db)):
             "item_name": row.item_name,
             "item_quantity": row.item_quantity,
             "item_unitprice": row.item_unitprice,
+            "item_sales": row.item_sales
         }
         for row in result
     ]

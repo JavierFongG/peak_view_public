@@ -43,6 +43,7 @@ def sales_detail(db: Session = Depends(get_db)):
         .join(Item, InvoiceDetail.item_id == Item.id)
         .filter(Invoice.voided == False)
         .filter(Invoice.invoice_number.isnot(None))
+        .filter(CreditNote.voided == False)
         .all()
     )
 

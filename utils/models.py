@@ -65,6 +65,7 @@ class CreditNote(Base):
 
     id = Column(Integer, primary_key=True)
     invoice_id = Column(Integer, ForeignKey("invoices.id"))
+    voided = Column(Boolean, default=False)
     date = Column(Date)
 
     invoice = relationship("Invoice", back_populates="credit_note")

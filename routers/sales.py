@@ -39,11 +39,10 @@ def sales_detail(db: Session = Depends(get_db)):
         .join(InvoiceDetail, Invoice.id == InvoiceDetail.invoice_id)
         .join(Employee, Invoice.seller_id == Employee.id)
         .join(Payee, Invoice.payee_id == Payee.id)
-        .outerjoin(CreditNote, Invoice.id == CreditNote.invoice_id)
+        .outerjoin(CreditNote, (Invoice.id == CreditNote.invoice_id) & (not_(CreditNote.voided)))
         .join(Item, InvoiceDetail.item_id == Item.id)
         .filter(Invoice.voided == False)
         .filter(Invoice.invoice_number.isnot(None))
-        .filter(CreditNote.voided == False)
         .all()
     )
 

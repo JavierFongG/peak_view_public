@@ -34,12 +34,20 @@ class InvoiceDetail(Base):
     id = Column(Integer, primary_key=True)
     invoice_id = Column(Integer, ForeignKey("invoices.id"))
     item_id = Column(Integer, ForeignKey("items.id"))
+    bundle_id = Column(Integer, ForeignKey("bundles.id"))
     quantity = Column(Float)
     unit_price = Column(Float)
 
     invoice = relationship("Invoice", back_populates="details")
     item = relationship("Item", back_populates="invoice_details")
+    bundle = relationship("Bundle", back_populates="invoice_details")
 
+class Bundle(Base): 
+    __tablename__ = "bundles"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+
+    invoice_details = relationship("InvoiceDetail", back_populates="bundle")
 
 class Employee(Base):
     __tablename__ = "employees"

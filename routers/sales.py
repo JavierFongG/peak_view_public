@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.orm import Session
 from utils.database import get_db
-from utils.models import Invoice, InvoiceDetail, Employee, Payee, CreditNote, Item 
-from sqlalchemy import text , func , not_, exists
+from utils.models import Invoice, InvoiceDetail, Employee, Payee, CreditNote, Item, Bundle
+from sqlalchemy import text, func, not_, exists, case
 import pandas as pd
 from datetime import datetime 
 
@@ -31,7 +31,15 @@ def sales_detail(db: Session = Depends(get_db)):
             Payee.name.label("payee_name"),
             Payee.tin.label("payee_nit"), 
             InvoiceDetail.item_id,
+            case(
+                (InvoiceDetail.item_id.isnot(None), InvoiceDetail.item_id),
+                (InvoiceDetail.bundle_id.isnot(None), InvoiceDetail.bundle_id)
+            ).label("itemd_id"),
             Item.name.label("item_name"),
+            case(
+                (InvoiceDetail.item_id.isnot(None), Item.name),
+                (InvoiceDetail.bundle_id.isnot(None), Bundle.name)  # Replace 'Bundle Name' with the actual bundle name logic if available
+            ).label("item_name"),
             InvoiceDetail.quantity.label("item_quantity"),
             InvoiceDetail.unit_price.label("item_unitprice"),
             (InvoiceDetail.quantity * InvoiceDetail.unit_price * (1 - (Invoice.extra_discount / Invoice.subtotal))).label("item_sales")
@@ -40,9 +48,11 @@ def sales_detail(db: Session = Depends(get_db)):
         .join(Employee, Invoice.seller_id == Employee.id)
         .join(Payee, Invoice.payee_id == Payee.id)
         .outerjoin(CreditNote, (Invoice.id == CreditNote.invoice_id) & (not_(CreditNote.voided)))
-        .join(Item, InvoiceDetail.item_id == Item.id)
+        .outerjoin(Item, InvoiceDetail.item_id == Item.id)
+        .outerjoin(Bundle, InvoiceDetail.bundle_id == Bundle.id)
         .filter(Invoice.voided == False)
         .filter(Invoice.invoice_number.isnot(None))
+        .filter(Invoice.invoice_number != '')  # Added condition to remove invoice_number = ''
         .all()
     )
 

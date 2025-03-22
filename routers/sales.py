@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.orm import Session
 from utils.database import get_db
-from utils.models import Invoice, InvoiceDetail, Employee, Payee, CreditNote, Item, Bundle
+from utils.models import Invoice, InvoiceDetail, Employee, Payee, CreditNote, Item, Bundle, ItemCategory
 from sqlalchemy import text, func, not_, exists, case
 import pandas as pd
 from datetime import datetime 
@@ -40,6 +40,10 @@ def sales_detail(db: Session = Depends(get_db)):
                 (InvoiceDetail.item_id.isnot(None), Item.name),
                 (InvoiceDetail.bundle_id.isnot(None), Bundle.name)  # Replace 'Bundle Name' with the actual bundle name logic if available
             ).label("item_name"),
+            case(
+                (ItemCategory.name.isnot(None), ItemCategory.name),
+                else_="unknown"
+            ).label("item_category"),
             InvoiceDetail.quantity.label("item_quantity"),
             InvoiceDetail.unit_price.label("item_unitprice"),
             (InvoiceDetail.quantity * InvoiceDetail.unit_price * (1 - (Invoice.extra_discount / Invoice.subtotal))).label("item_sales")
@@ -50,6 +54,7 @@ def sales_detail(db: Session = Depends(get_db)):
         .outerjoin(CreditNote, (Invoice.id == CreditNote.invoice_id) & (not_(CreditNote.voided)))
         .outerjoin(Item, InvoiceDetail.item_id == Item.id)
         .outerjoin(Bundle, InvoiceDetail.bundle_id == Bundle.id)
+        .outerjoin(ItemCategory, Item.item_category_id == ItemCategory.id)
         .filter(Invoice.voided == False)
         .filter(Invoice.invoice_number.isnot(None))
         .filter(Invoice.invoice_number != '')  # Added condition to remove invoice_number = ''
@@ -74,6 +79,7 @@ def sales_detail(db: Session = Depends(get_db)):
             "payee_nit": row.payee_nit,
             "item_id": row.item_id,
             "item_name": row.item_name,
+            "item_category": row.item_category,
             "item_quantity": row.item_quantity,
             "item_unitprice": row.item_unitprice,
             "item_sales": row.item_sales

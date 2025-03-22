@@ -84,5 +84,15 @@ class Item(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    item_category_id = Column(Integer, ForeignKey("item_categories.id"))
 
     invoice_details = relationship("InvoiceDetail", back_populates="item")
+    item_category = relationship("ItemCategory", back_populates="items")
+
+class ItemCategory(Base): 
+    __tablename__ = "item_categories"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+
+    items = relationship("Item", back_populates="item_category")
